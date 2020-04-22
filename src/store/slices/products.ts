@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { mockProducts } from "../mockProducts";
 
-export interface Product {
+export interface IProduct {
   id: number;
   title: string;
   description: string;
@@ -11,7 +11,7 @@ export interface Product {
 
 export interface IProductsInitialState {
   isLoading: boolean;
-  items: Product[];
+  items: IProduct[];
 }
 
 const initialState: IProductsInitialState = {

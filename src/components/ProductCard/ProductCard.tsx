@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
 
-import { Product } from "../../store/slices/products";
+import { IProduct } from "../../store/slices/products";
 
 import { addToCart } from "../../store/slices/cart";
 
-export const ProductCard: React.FC<Product> = ({
+export const ProductCard: React.FC<IProduct> = ({
   id,
   title,
   imageUrl,
