@@ -8,7 +8,10 @@ export const CartSmall: React.FC = () => {
   // TODO: Refactor to use actual types
 
   const totalPrice: number = cart.length
-    ? cart.reduce((total, current: any) => (total += current.price), 0)
+    ? cart.reduce(
+        (total, current: any) => (total += current.price * current.quantity),
+        0
+      )
     : 0;
 
   return (
