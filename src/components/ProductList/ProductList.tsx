@@ -6,16 +6,10 @@ import { RootState } from "../../store/rootReducer";
 
 import { ProductCard } from "../ProductCard";
 
-export interface Product {
-  id: number;
-  title: string;
-  description: string;
-  imageUrl: string;
-  price: number;
-}
+import { Product } from "../../store/slices/products";
 
 export const ProductList: React.FC = () => {
-  const products = useSelector((state: RootState) => state.products);
+  const products = useSelector((state: RootState) => state.products.items);
 
   return (
     <Wrapper>
@@ -42,6 +36,7 @@ export const ProductList: React.FC = () => {
 const Wrapper = styled.div`
   max-width: 960px;
   margin: 64px auto 64px auto;
+  padding: 0 16px;
 `;
 
 const Grid = styled.div`
@@ -49,6 +44,9 @@ const Grid = styled.div`
   grid-template-columns: repeat(3, 1fr);
   grid-row-gap: 64px;
   grid-column-gap: 32px;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 const GridItem = styled.div`
