@@ -1,10 +1,14 @@
 import * as React from "react";
 import styled from "styled-components";
+import { CartSmall } from "../CartSmall";
 
 export const AppHeader: React.FC = () => {
   return (
     <HeaderWrapper>
-      <HeaderInner>Header</HeaderInner>
+      <HeaderInner>
+        <Logo>Logo</Logo>
+        <CartSmall></CartSmall>
+      </HeaderInner>
     </HeaderWrapper>
   );
 };
@@ -21,4 +25,12 @@ const HeaderInner = styled.div`
   width: 100%;
   max-width: 960px;
   margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const Logo = styled.div`
+  font-size: 18px;
+  font-weight: bold;
 `;

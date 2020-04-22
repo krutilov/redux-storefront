@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 
-import { Counter } from "./components/Counter";
+// import { Counter } from "./components/Counter";
 import { ProductList } from "./components/ProductList";
 import { AppHeader } from "./components/AppHeader";
 
@@ -9,7 +9,7 @@ export const App: React.FC = () => {
   return (
     <AppWrapper>
       <AppHeader />
-      <Counter />
+      {/* <Counter /> */}
       <ProductList />
     </AppWrapper>
   );

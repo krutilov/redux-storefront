@@ -29,6 +29,8 @@ export const ProductList: React.FC = () => {
               description={product.description}
               imageUrl={product.imageUrl}
               price={product.price}
+              // TODO: Call dispatch from here
+              // onClick={() => dispatch(product)}
             />
           </GridItem>
         ))}
@@ -39,7 +41,7 @@ export const ProductList: React.FC = () => {
 
 const Wrapper = styled.div`
   max-width: 960px;
-  margin: 0 auto;
+  margin: 64px auto 64px auto;
 `;
 
 const Grid = styled.div`

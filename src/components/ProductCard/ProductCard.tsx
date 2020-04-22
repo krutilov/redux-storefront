@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/rootReducer";
 
 import { Product } from "../ProductList/ProductList";
 
@@ -13,10 +14,12 @@ export const ProductCard: React.FC<Product> = ({
   price,
 }) => {
   const dispatch = useDispatch();
+  const products = useSelector((state: RootState) => state.products);
 
   const handleAddToCart = () => {
     console.log(`Add to cart, product id — ${id}`);
-    dispatch(addToCart(id));
+    const currentProduct = products.find((product) => product.id === id);
+    dispatch(addToCart(currentProduct));
   };
 
   return (
