@@ -1,7 +1,10 @@
 import * as React from "react";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
 
 import { Product } from "../ProductList/ProductList";
+
+import { addToCart } from "../../store/slices/cart";
 
 export const ProductCard: React.FC<Product> = ({
   id,
@@ -9,8 +12,11 @@ export const ProductCard: React.FC<Product> = ({
   imageUrl,
   price,
 }) => {
+  const dispatch = useDispatch();
+
   const handleAddToCart = () => {
     console.log(`Add to cart, product id — ${id}`);
+    dispatch(addToCart(id));
   };
 
   return (
