@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../store/rootReducer";
 
-import { removeFromCart, ICartItem } from "../../store/slices/cart";
+import { RootState } from "../../store/rootReducer";
+import { removeFromCart, CartItem } from "../../store/slices/cart";
 
 export const Cart: React.FC = () => {
   const cart = useSelector((state: RootState) => state.cart.items);
@@ -11,12 +11,12 @@ export const Cart: React.FC = () => {
   return (
     <div>
       <h2>Cart</h2>
-      {cart.map((item: ICartItem, index) => (
+      {cart.map((cartItem: CartItem, index) => (
         <div key={index}>
-          <div>{item.title}</div>
-          <div>Price: {item.price}</div>
-          <div>Qty: {item.quantity}</div>
-          <button onClick={() => dispatch(removeFromCart(item.id))}>
+          <div>{cartItem.title}</div>
+          <div>Price: {cartItem.price}</div>
+          <div>Qty: {cartItem.quantity}</div>
+          <button onClick={() => dispatch(removeFromCart(cartItem.id))}>
             remove from cart
           </button>
         </div>

@@ -1,24 +1,21 @@
 import * as React from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/rootReducer";
+import { useDispatch } from "react-redux";
 
-import { IProduct } from "../../store/slices/products";
-
+import { Product } from "../../store/slices/products";
 import { addToCart } from "../../store/slices/cart";
 
-export const ProductCard: React.FC<IProduct> = ({
+export const ProductCard: React.FC<Product> = ({
   id,
   title,
   imageUrl,
   price,
 }) => {
   const dispatch = useDispatch();
-  const products = useSelector((state: RootState) => state.products.items);
 
   const handleAddToCart = () => {
-    const currentProduct = products.find((product) => product.id === id);
-    dispatch(addToCart(currentProduct));
+    // TODO: research
+    dispatch(addToCart({ id, title, price }));
   };
 
   return (

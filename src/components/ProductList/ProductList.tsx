@@ -3,10 +3,9 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 import { RootState } from "../../store/rootReducer";
+import { Product } from "../../store/slices/products";
 
 import { ProductCard } from "../ProductCard";
-
-import { IProduct } from "../../store/slices/products";
 
 export const ProductList: React.FC = () => {
   const products = useSelector((state: RootState) => state.products.items);
@@ -15,7 +14,7 @@ export const ProductList: React.FC = () => {
     <Wrapper>
       <h2>Product list</h2>
       <Grid>
-        {products.map((product: IProduct) => (
+        {products.map((product: Product) => (
           <GridItem key={product.id}>
             <ProductCard
               id={product.id}

@@ -16,14 +16,14 @@ export const AppHeader: React.FC = () => {
 const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
-  height: 60px;
+  height: 70px;
   background: #fff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 `;
 
 const HeaderInner = styled.div`
   width: 100%;
-  max-width: 960px;
+  padding: 0 32px;
   margin: 0 auto;
   display: flex;
   align-items: center;

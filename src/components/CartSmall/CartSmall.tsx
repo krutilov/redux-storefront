@@ -2,14 +2,14 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
 
-import { ICartItem } from "../../store/slices/cart";
+import { CartItem } from "../../store/slices/cart";
 
 export const CartSmall: React.FC = () => {
   const cart = useSelector((state: RootState) => state.cart.items);
 
   const totalPrice: number = cart.length
     ? cart.reduce(
-        (total: number, current: ICartItem) =>
+        (total: number, current: CartItem) =>
           (total += current.price * current.quantity),
         0
       )

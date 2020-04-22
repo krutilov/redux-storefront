@@ -1,24 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface ICartItem {
+export interface CartItem {
   id: number;
   title: string;
   price: number;
   quantity: number;
 }
 
-interface IAddPayload {
+interface CartAddPayload {
   id: number;
   title: string;
   price: number;
 }
 
-export interface ICartInitialState {
+export interface CartInitialState {
   isLoading: boolean;
-  items: ICartItem[];
+  items: CartItem[];
 }
 
-const initialState: ICartInitialState = {
+const initialState: CartInitialState = {
   isLoading: false,
   items: [],
 };
@@ -27,14 +27,12 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    // TODO: actual type check here for state and action
-
-    addToCart(state, action) {
-      // addToCart(state, action: PayloadAction<IAddPayload>) {
-      console.log(action.payload);
-
+    addToCart(state, action: PayloadAction<CartAddPayload>) {
       const { id, title, price } = action.payload;
-      const current = state.items.find((item: ICartItem) => item.id === id);
+
+      // TODO: better naming here for current const
+
+      const current = state.items.find((item: CartItem) => item.id === id);
 
       if (current) {
         current.quantity = current.quantity + 1;
@@ -44,9 +42,8 @@ export const cartSlice = createSlice({
     },
     removeFromCart(state, action) {
       const index = state.items.findIndex(
-        (item: ICartItem) => item.id === action.payload
+        (item: CartItem) => item.id === action.payload
       );
-
       if (index !== -1) {
         state.items.splice(index, 1);
       }
