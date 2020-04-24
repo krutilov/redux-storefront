@@ -7,6 +7,8 @@ import { CartItem } from "../../store/slices/cart";
 export const CartSmall: React.FC = () => {
   const cart = useSelector((state: RootState) => state.cart.items);
 
+  // TODO: refactor to make more readable
+
   const totalPrice: number = cart.length
     ? cart.reduce(
         (total: number, current: CartItem) =>

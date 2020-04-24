@@ -12,15 +12,27 @@ export interface Product {
 export interface ProductsInitialState {
   isLoading: boolean;
   items: Product[];
+  error: boolean;
 }
 
 const initialState: ProductsInitialState = {
-  isLoading: true,
+  isLoading: false,
   items: mockProducts,
+  error: false,
 };
 
 export const productsSlice = createSlice({
   name: "products",
   initialState,
-  reducers: {},
+  reducers: {
+    getProductsStart(state, action) {
+      //
+    },
+    getProductsSuccess(state, action) {
+      //
+    },
+    getProductsFailure(state, action) {
+      //
+    },
+  },
 });

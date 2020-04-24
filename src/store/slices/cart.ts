@@ -16,11 +16,15 @@ interface CartAddPayload {
 export interface CartInitialState {
   isLoading: boolean;
   items: CartItem[];
+  error: boolean;
+  total: number;
 }
 
 const initialState: CartInitialState = {
   isLoading: false,
   items: [],
+  error: false,
+  total: 0,
 };
 
 export const cartSlice = createSlice({
@@ -30,14 +34,19 @@ export const cartSlice = createSlice({
     addToCart(state, action: PayloadAction<CartAddPayload>) {
       const { id, title, price } = action.payload;
 
-      // TODO: better naming here for current const
+      const existingProduct = state.items.find(
+        (item: CartItem) => item.id === id
+      );
 
-      const current = state.items.find((item: CartItem) => item.id === id);
-
-      if (current) {
-        current.quantity = current.quantity + 1;
+      if (existingProduct) {
+        existingProduct.quantity = existingProduct.quantity + 1;
       } else {
-        state.items.push({ id, title, price, quantity: 1 });
+        state.items.push({
+          id,
+          title,
+          price,
+          quantity: 1,
+        });
       }
     },
     removeFromCart(state, action) {
