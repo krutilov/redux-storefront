@@ -7,6 +7,8 @@ import { removeFromCart, CartItem } from "../../store/slices/cart";
 
 import { WrapperContainer } from "../WrapperContainer";
 
+import { formatPrice } from "../../utils/formatPrice";
+
 export const Cart: React.FC = () => {
   const cart = useSelector((state: RootState) => state.cart.items);
   const dispatch = useDispatch();
@@ -18,7 +20,7 @@ export const Cart: React.FC = () => {
         ? cart.map((cartItem: CartItem, index) => (
             <CartItemWrapper key={index}>
               <div>{cartItem.title}</div>
-              <div>Price: {cartItem.price}</div>
+              <div>Price: {formatPrice(cartItem.price)}</div>
               <div>Qty: {cartItem.quantity}</div>
               <button onClick={() => dispatch(removeFromCart(cartItem.id))}>
                 remove from cart

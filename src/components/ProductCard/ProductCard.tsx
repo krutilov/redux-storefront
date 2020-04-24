@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { Product } from "../../store/slices/products";
 import { addToCart } from "../../store/slices/cart";
 
+import { formatPrice } from "../../utils/formatPrice";
+
 import { Button } from "../Button";
 
 export const ProductCard: React.FC<Product> = ({
@@ -26,7 +28,7 @@ export const ProductCard: React.FC<Product> = ({
         <Image src={imageUrl} alt={title} />
       </ImageWrapper>
       <Title>{title}</Title>
-      <Price>{price}</Price>
+      <Price>{formatPrice(price)}</Price>
       {/* <button onClick={handleAddToCart}>Add to cart</button> */}
       <Button onClick={handleAddToCart} title="Add to cart"></Button>
     </CardWrapper>
