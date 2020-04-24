@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { AppThunk } from "../store";
-import { getSingleProduct } from "../api/mockApi";
+import { getSingleProduct, getDiscountPercent } from "../api/mockApi";
 import { Product } from "../slices/products";
 
 export interface CartItem {
@@ -21,18 +21,18 @@ export interface CartInitialState {
   isLoading: boolean;
   items: CartItem[];
   error: boolean;
-  price: number;
-  discountPercent: number;
   total: number;
+  discountPercent: number;
+  discountedPrice: number;
 }
 
 const initialState: CartInitialState = {
   isLoading: false,
   items: [],
   error: false,
-  price: 0,
-  discountPercent: 0,
   total: 0,
+  discountPercent: 0,
+  discountedPrice: 0,
 };
 
 export const cartSlice = createSlice({
@@ -73,9 +73,22 @@ export const cartSlice = createSlice({
         state.items.splice(index, 1);
       }
     },
-    getDiscountPercent(state, action) {
+    setDiscountPercent(state, action) {
       const discountPercent = action.payload;
       state.discountPercent = discountPercent;
+    },
+    countTotal(state) {
+      state.total = state.items.reduce(
+        (total: number, current: CartItem) =>
+          (total += current.price * current.quantity),
+        0
+      );
+    },
+    countDiscount(state) {
+      if (state.discountPercent > 0) {
+        state.discountedPrice =
+          state.total - (state.total / 100) * state.discountPercent;
+      }
     },
   },
 });
@@ -85,7 +98,9 @@ export const {
   addToCartSuccess,
   addToCartFailure,
   removeFromCart,
-  getDiscountPercent,
+  setDiscountPercent,
+  countTotal,
+  countDiscount,
 } = cartSlice.actions;
 
 export const addSingleProductToCart = (id: number): AppThunk => async (
@@ -95,6 +110,19 @@ export const addSingleProductToCart = (id: number): AppThunk => async (
     dispatch(addToCartStart());
     const singleProduct = await getSingleProduct(id);
     dispatch(addToCartSuccess(singleProduct));
+    dispatch(countTotal());
+    dispatch(countDiscount());
+  } catch (err) {
+    dispatch(addToCartFailure(err));
+  }
+};
+
+export const applyDiscount = (): AppThunk => async (dispatch) => {
+  try {
+    const discountPercent = await getDiscountPercent();
+    console.log(discountPercent);
+    dispatch(setDiscountPercent(discountPercent));
+    dispatch(countDiscount());
   } catch (err) {
     dispatch(addToCartFailure(err));
   }

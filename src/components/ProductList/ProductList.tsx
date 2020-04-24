@@ -6,8 +6,9 @@ import { RootState } from "../../store/rootReducer";
 import { fetchProducts } from "../../store/slices/products";
 import { Product } from "../../store/slices/products";
 
-import { ProductCard } from "../ProductCard";
 import { WrapperContainer } from "../WrapperContainer";
+import { SectionTitle } from "../SectionTitle";
+import { ProductCard } from "../ProductCard";
 
 export const ProductList: React.FC = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ export const ProductList: React.FC = () => {
 
   return (
     <WrapperContainer>
-      <h2>Product list</h2>
+      <SectionTitle title="Product list"></SectionTitle>
       <Grid>
         {isLoading
           ? "Loading items"

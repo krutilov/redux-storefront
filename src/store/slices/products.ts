@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { mockProducts } from "../mockProducts";
 
 import { AppThunk } from "../store";
 import { getData } from "../api/mockApi";

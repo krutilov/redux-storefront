@@ -8,16 +8,9 @@ import { formatPrice } from "../../utils/formatPrice";
 
 export const CartSmall: React.FC = () => {
   const cart = useSelector((state: RootState) => state.cart.items);
-
-  // TODO: refactor to make more readable
-
-  const totalPrice: number = cart.length
-    ? cart.reduce(
-        (total: number, current: CartItem) =>
-          (total += current.price * current.quantity),
-        0
-      )
-    : 0;
+  const totalPrice: number = useSelector(
+    (state: RootState) => state.cart.total
+  );
 
   return (
     <div>

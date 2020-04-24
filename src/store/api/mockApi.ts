@@ -14,3 +14,10 @@ export const getSingleProduct = (id: number) =>
       resolve(product);
     }, 300);
   });
+
+export const getDiscountPercent = () =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(10);
+    }, 150);
+  });
