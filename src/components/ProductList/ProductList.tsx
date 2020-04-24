@@ -6,12 +6,13 @@ import { RootState } from "../../store/rootReducer";
 import { Product } from "../../store/slices/products";
 
 import { ProductCard } from "../ProductCard";
+import { WrapperContainer } from "../WrapperContainer";
 
 export const ProductList: React.FC = () => {
   const products = useSelector((state: RootState) => state.products.items);
 
   return (
-    <Wrapper>
+    <WrapperContainer>
       <h2>Product list</h2>
       <Grid>
         {products.map((product: Product) => (
@@ -28,15 +29,9 @@ export const ProductList: React.FC = () => {
           </GridItem>
         ))}
       </Grid>
-    </Wrapper>
+    </WrapperContainer>
   );
 };
-
-const Wrapper = styled.div`
-  max-width: 960px;
-  margin: 64px auto 64px auto;
-  padding: 0 16px;
-`;
 
 const Grid = styled.div`
   display: grid;

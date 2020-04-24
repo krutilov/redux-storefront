@@ -19,18 +19,18 @@ export const ProductCard: React.FC<Product> = ({
   };
 
   return (
-    <Wrapper>
+    <CardWrapper>
       <ImageWrapper>
         <Image src={imageUrl} alt={title} />
       </ImageWrapper>
       <Title>{title}</Title>
       <Price>{price}</Price>
       <button onClick={handleAddToCart}>Add to cart</button>
-    </Wrapper>
+    </CardWrapper>
   );
 };
 
-const Wrapper = styled.div`
+const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
