@@ -1,33 +1,42 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import { RootState } from "../../store/rootReducer";
+import { fetchProducts } from "../../store/slices/products";
 import { Product } from "../../store/slices/products";
 
 import { ProductCard } from "../ProductCard";
 import { WrapperContainer } from "../WrapperContainer";
 
 export const ProductList: React.FC = () => {
+  const dispatch = useDispatch();
   const products = useSelector((state: RootState) => state.products.items);
+  const isLoading = useSelector((state: RootState) => state.products.isLoading);
+
+  React.useEffect(() => {
+    if (!products.length) {
+      dispatch(fetchProducts());
+    }
+  }, [products, dispatch]);
 
   return (
     <WrapperContainer>
       <h2>Product list</h2>
       <Grid>
-        {products.map((product: Product) => (
-          <GridItem key={product.id}>
-            <ProductCard
-              id={product.id}
-              title={product.title}
-              description={product.description}
-              imageUrl={product.imageUrl}
-              price={product.price}
-              // TODO: Call dispatch from here
-              // onClick={() => dispatch(product)}
-            />
-          </GridItem>
-        ))}
+        {isLoading
+          ? "Loading items"
+          : products.map((product: Product) => (
+              <GridItem key={product.id}>
+                <ProductCard
+                  id={product.id}
+                  title={product.title}
+                  description={product.description}
+                  imageUrl={product.imageUrl}
+                  price={product.price}
+                />
+              </GridItem>
+            ))}
       </Grid>
     </WrapperContainer>
   );

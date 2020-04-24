@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
 import { Product } from "../../store/slices/products";
-import { addToCart } from "../../store/slices/cart";
+import { addSingleProductToCart } from "../../store/slices/cart";
 
 import { formatPrice } from "../../utils/formatPrice";
 
@@ -18,8 +18,7 @@ export const ProductCard: React.FC<Product> = ({
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
-    // TODO: research
-    dispatch(addToCart({ id, title, price }));
+    dispatch(addSingleProductToCart(id));
   };
 
   return (
@@ -29,7 +28,6 @@ export const ProductCard: React.FC<Product> = ({
       </ImageWrapper>
       <Title>{title}</Title>
       <Price>{formatPrice(price)}</Price>
-      {/* <button onClick={handleAddToCart}>Add to cart</button> */}
       <Button onClick={handleAddToCart} title="Add to cart"></Button>
     </CardWrapper>
   );

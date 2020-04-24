@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { mockProducts } from "../mockProducts";
 
+import { AppThunk } from "../store";
+import { getData } from "../api/mockApi";
+
 export interface Product {
   id: number;
   title: string;
@@ -17,7 +20,7 @@ export interface ProductsInitialState {
 
 const initialState: ProductsInitialState = {
   isLoading: false,
-  items: mockProducts,
+  items: [],
   error: false,
 };
 
@@ -25,14 +28,31 @@ export const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    getProductsStart(state, action) {
-      //
+    getProductsStart(state) {
+      state.isLoading = true;
     },
     getProductsSuccess(state, action) {
-      //
+      state.isLoading = false;
+      state.items = action.payload;
     },
     getProductsFailure(state, action) {
-      //
+      state.error = true;
     },
   },
 });
+
+export const {
+  getProductsStart,
+  getProductsSuccess,
+  getProductsFailure,
+} = productsSlice.actions;
+
+export const fetchProducts = (): AppThunk => async (dispatch) => {
+  try {
+    dispatch(getProductsStart());
+    const data = await getData();
+    dispatch(getProductsSuccess(data));
+  } catch (err) {
+    dispatch(getProductsFailure(err));
+  }
+};

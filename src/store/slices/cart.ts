@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+import { AppThunk } from "../store";
+import { getSingleProduct } from "../api/mockApi";
+import { Product } from "../slices/products";
+
 export interface CartItem {
   id: number;
   title: string;
@@ -17,28 +21,35 @@ export interface CartInitialState {
   isLoading: boolean;
   items: CartItem[];
   error: boolean;
-  total: number;
+  price: number;
   discountPercent: number;
+  total: number;
 }
 
 const initialState: CartInitialState = {
   isLoading: false,
   items: [],
   error: false,
-  total: 0,
+  price: 0,
   discountPercent: 0,
+  total: 0,
 };
 
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addToCart(state, action: PayloadAction<CartAddPayload>) {
+    addToCartStart(state) {
+      state.isLoading = true;
+    },
+    addToCartSuccess(state, action: PayloadAction<any>) {
       const { id, title, price } = action.payload;
 
       const existingProduct = state.items.find(
         (item: CartItem) => item.id === id
       );
+
+      state.isLoading = false;
 
       if (existingProduct) {
         existingProduct.quantity = existingProduct.quantity + 1;
@@ -50,6 +61,9 @@ export const cartSlice = createSlice({
           quantity: 1,
         });
       }
+    },
+    addToCartFailure(state, action) {
+      state.error = true;
     },
     removeFromCart(state, action) {
       const index = state.items.findIndex(
@@ -67,7 +81,21 @@ export const cartSlice = createSlice({
 });
 
 export const {
-  addToCart,
+  addToCartStart,
+  addToCartSuccess,
+  addToCartFailure,
   removeFromCart,
   getDiscountPercent,
 } = cartSlice.actions;
+
+export const addSingleProductToCart = (id: number): AppThunk => async (
+  dispatch
+) => {
+  try {
+    dispatch(addToCartStart());
+    const singleProduct = await getSingleProduct(id);
+    dispatch(addToCartSuccess(singleProduct));
+  } catch (err) {
+    dispatch(addToCartFailure(err));
+  }
+};

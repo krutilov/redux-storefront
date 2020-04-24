@@ -19,7 +19,7 @@ export const Cart: React.FC = () => {
       {cart.length
         ? cart.map((cartItem: CartItem, index) => (
             <CartItemWrapper key={index}>
-              <div>{cartItem.title}</div>
+              <CartItemTitle>{cartItem.title}</CartItemTitle>
               <div>Price: {formatPrice(cartItem.price)}</div>
               <div>Qty: {cartItem.quantity}</div>
               <button onClick={() => dispatch(removeFromCart(cartItem.id))}>
@@ -35,6 +35,11 @@ export const Cart: React.FC = () => {
 const CartItemWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  &:not(:last-child) {
+    margin-bottom: 16px;
+  }
 `;
 
-const CartItemTitle = styled.div``;
+const CartItemTitle = styled.div`
+  flex-basis: 40%;
+`;
