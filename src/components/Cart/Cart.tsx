@@ -3,7 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import { RootState } from "../../store/rootReducer";
-import { removeFromCart, CartItem } from "../../store/slices/cart";
+import {
+  removeFromCart,
+  CartItem,
+  increaseItemQuantity,
+} from "../../store/slices/cart";
 
 import { WrapperContainer } from "../WrapperContainer";
 
@@ -21,7 +25,14 @@ export const Cart: React.FC = () => {
             <CartItemWrapper key={index}>
               <CartItemTitle>{cartItem.title}</CartItemTitle>
               <div>Price: {formatPrice(cartItem.price)}</div>
-              <div>Qty: {cartItem.quantity}</div>
+              <div>
+                Qty: {cartItem.quantity}{" "}
+                <button
+                  onClick={() => dispatch(increaseItemQuantity(cartItem.id))}
+                >
+                  +
+                </button>
+              </div>
               <button onClick={() => dispatch(removeFromCart(cartItem.id))}>
                 remove from cart
               </button>

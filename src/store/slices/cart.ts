@@ -26,6 +26,8 @@ export interface CartInitialState {
   discountedPrice: number;
 }
 
+// TODO: refactor cart initial state
+
 const initialState: CartInitialState = {
   isLoading: false,
   items: [],
@@ -65,6 +67,20 @@ export const cartSlice = createSlice({
     addToCartFailure(state, action) {
       state.error = true;
     },
+    increaseItemQuantity(state, action) {
+      const productId = action.payload;
+
+      const currentProduct = state.items.find(
+        (product: CartItem) => product.id === productId
+      );
+
+      if (currentProduct) {
+        currentProduct.quantity = currentProduct.quantity += 1;
+      }
+    },
+    decreaseItemQuantity(state, action) {
+      //
+    },
     removeFromCart(state, action) {
       const index = state.items.findIndex(
         (item: CartItem) => item.id === action.payload
@@ -101,6 +117,7 @@ export const {
   setDiscountPercent,
   countTotal,
   countDiscount,
+  increaseItemQuantity,
 } = cartSlice.actions;
 
 export const addSingleProductToCart = (id: number): AppThunk => async (
@@ -119,11 +136,21 @@ export const addSingleProductToCart = (id: number): AppThunk => async (
 
 export const applyDiscount = (): AppThunk => async (dispatch) => {
   try {
+    // TODO: Add discount is loading statuses
+
     const discountPercent = await getDiscountPercent();
     console.log(discountPercent);
     dispatch(setDiscountPercent(discountPercent));
     dispatch(countDiscount());
   } catch (err) {
+    // TODO: should be another error here
     dispatch(addToCartFailure(err));
+  }
+};
+
+export const updateItemQuantity = (): AppThunk => async (dispatch) => {
+  try {
+  } catch (err) {
+    // dispatch(addToCartFailure(err));
   }
 };
