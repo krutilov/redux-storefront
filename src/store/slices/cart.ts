@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 
 import { AppThunk } from "../store";
+import { RootState } from "../rootReducer";
 import { getSingleProduct, getDiscountPercent } from "../api/mockApi";
 import { Product } from "../slices/products";
 
@@ -154,3 +155,6 @@ export const updateItemQuantity = (): AppThunk => async (dispatch) => {
     // dispatch(addToCartFailure(err));
   }
 };
+
+export const taxSelector = (state: RootState) =>
+  state.cart.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
