@@ -19,9 +19,15 @@ export const AppHeader: React.FC = () => {
 };
 
 const HeaderWrapper = styled.div`
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
   display: flex;
   align-items: center;
   height: 70px;
+  background: #fff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 `;
 

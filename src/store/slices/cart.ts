@@ -18,6 +18,7 @@ export interface CartInitialState {
   items: CartItem[];
   error: boolean;
   total: number;
+  discountPercent: number;
 }
 
 const initialState: CartInitialState = {
@@ -25,6 +26,7 @@ const initialState: CartInitialState = {
   items: [],
   error: false,
   total: 0,
+  discountPercent: 0,
 };
 
 export const cartSlice = createSlice({
@@ -57,7 +59,15 @@ export const cartSlice = createSlice({
         state.items.splice(index, 1);
       }
     },
+    getDiscountPercent(state, action) {
+      const discountPercent = action.payload;
+      state.discountPercent = discountPercent;
+    },
   },
 });
 
-export const { addToCart, removeFromCart } = cartSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  getDiscountPercent,
+} = cartSlice.actions;

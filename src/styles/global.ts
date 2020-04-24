@@ -22,5 +22,6 @@ export const GlobalStyles = createGlobalStyle<Theme>`
     color: ${({ theme }) => theme.text};
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     transition: background-color 0.3s linear, color 0.3s linear;
+    padding-top: 70px;
   }
 `;
