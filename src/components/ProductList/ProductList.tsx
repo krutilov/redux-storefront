@@ -2,8 +2,11 @@ import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { RootState } from "../../store/rootReducer";
-import { fetchProducts } from "../../store/slices/products";
+import {
+  productsSelector,
+  productsLoadingStatusSelector,
+  fetchProducts,
+} from "../../store/slices/products";
 import { Product } from "../../store/slices/products";
 
 import { WrapperContainer } from "../WrapperContainer";
@@ -12,8 +15,8 @@ import { ProductCard } from "../ProductCard";
 
 export const ProductList: React.FC = () => {
   const dispatch = useDispatch();
-  const products = useSelector((state: RootState) => state.products.items);
-  const isLoading = useSelector((state: RootState) => state.products.isLoading);
+  const products = useSelector(productsSelector);
+  const isLoading = useSelector(productsLoadingStatusSelector);
 
   React.useEffect(() => {
     if (!products.length) {
@@ -27,7 +30,7 @@ export const ProductList: React.FC = () => {
       <Grid>
         {isLoading
           ? "Loading items"
-          : products.map((product: Product) => (
+          : products.map((product: any) => (
               <GridItem key={product.id}>
                 <ProductCard
                   id={product.id}

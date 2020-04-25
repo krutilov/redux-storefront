@@ -1,9 +1,8 @@
-import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 import { AppThunk } from "../store";
 import { RootState } from "../rootReducer";
 import { getSingleProduct, getDiscountPercent } from "../api/mockApi";
-import { Product } from "../slices/products";
 
 export interface CartItem {
   id: number;
@@ -12,30 +11,18 @@ export interface CartItem {
   quantity: number;
 }
 
-interface CartAddPayload {
-  id: number;
-  title: string;
-  price: number;
-}
-
 export interface CartInitialState {
   isLoading: boolean;
   items: CartItem[];
   error: boolean;
-  total: number;
   discountPercent: number;
-  discountedPrice: number;
 }
-
-// TODO: refactor cart initial state
 
 const initialState: CartInitialState = {
   isLoading: false,
   items: [],
   error: false,
-  total: 0,
   discountPercent: 0,
-  discountedPrice: 0,
 };
 
 export const cartSlice = createSlice({
@@ -45,42 +32,38 @@ export const cartSlice = createSlice({
     addToCartStart(state) {
       state.isLoading = true;
     },
-    addToCartSuccess(state, action: PayloadAction<any>) {
+    addToCartSuccess(state, action) {
       const { id, title, price } = action.payload;
-
       const existingProduct = state.items.find(
         (item: CartItem) => item.id === id
       );
-
-      state.isLoading = false;
-
       if (existingProduct) {
         existingProduct.quantity = existingProduct.quantity + 1;
       } else {
-        state.items.push({
-          id,
-          title,
-          price,
-          quantity: 1,
-        });
+        state.items.push({ id, title, price, quantity: 1 });
       }
+      state.isLoading = false;
     },
     addToCartFailure(state, action) {
       state.error = true;
     },
     increaseItemQuantity(state, action) {
       const productId = action.payload;
-
       const currentProduct = state.items.find(
         (product: CartItem) => product.id === productId
       );
-
       if (currentProduct) {
         currentProduct.quantity = currentProduct.quantity += 1;
       }
     },
     decreaseItemQuantity(state, action) {
-      //
+      const productId = action.payload;
+      const currentProduct = state.items.find(
+        (product: CartItem) => product.id === productId
+      );
+      if (currentProduct && currentProduct.quantity > 1) {
+        currentProduct.quantity = currentProduct.quantity -= 1;
+      }
     },
     removeFromCart(state, action) {
       const index = state.items.findIndex(
@@ -91,21 +74,7 @@ export const cartSlice = createSlice({
       }
     },
     setDiscountPercent(state, action) {
-      const discountPercent = action.payload;
-      state.discountPercent = discountPercent;
-    },
-    countTotal(state) {
-      state.total = state.items.reduce(
-        (total: number, current: CartItem) =>
-          (total += current.price * current.quantity),
-        0
-      );
-    },
-    countDiscount(state) {
-      if (state.discountPercent > 0) {
-        state.discountedPrice =
-          state.total - (state.total / 100) * state.discountPercent;
-      }
+      state.discountPercent = action.payload;
     },
   },
 });
@@ -116,10 +85,27 @@ export const {
   addToCartFailure,
   removeFromCart,
   setDiscountPercent,
-  countTotal,
-  countDiscount,
   increaseItemQuantity,
+  decreaseItemQuantity,
 } = cartSlice.actions;
+
+// Selectors
+
+export const cartItemsSelector = (state: RootState) => state.cart.items;
+
+export const cartDiscountPercentSelector = (state: RootState) =>
+  state.cart.discountPercent;
+
+export const cartTotalSelector = createSelector(cartItemsSelector, (items) =>
+  items.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
+);
+
+export const cartTotalWithDiscountSelector = createSelector(
+  [cartTotalSelector, cartDiscountPercentSelector],
+  (total, discount) => total - (total / 100) * discount
+);
+
+// Thunks
 
 export const addSingleProductToCart = (id: number): AppThunk => async (
   dispatch
@@ -128,8 +114,6 @@ export const addSingleProductToCart = (id: number): AppThunk => async (
     dispatch(addToCartStart());
     const singleProduct = await getSingleProduct(id);
     dispatch(addToCartSuccess(singleProduct));
-    dispatch(countTotal());
-    dispatch(countDiscount());
   } catch (err) {
     dispatch(addToCartFailure(err));
   }
@@ -138,23 +122,10 @@ export const addSingleProductToCart = (id: number): AppThunk => async (
 export const applyDiscount = (): AppThunk => async (dispatch) => {
   try {
     // TODO: Add discount is loading statuses
-
     const discountPercent = await getDiscountPercent();
-    console.log(discountPercent);
     dispatch(setDiscountPercent(discountPercent));
-    dispatch(countDiscount());
   } catch (err) {
     // TODO: should be another error here
     dispatch(addToCartFailure(err));
   }
 };
-
-export const updateItemQuantity = (): AppThunk => async (dispatch) => {
-  try {
-  } catch (err) {
-    // dispatch(addToCartFailure(err));
-  }
-};
-
-export const taxSelector = (state: RootState) =>
-  state.cart.items.reduce((acc, item) => acc + item.price * item.quantity, 0);

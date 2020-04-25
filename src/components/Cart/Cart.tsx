@@ -1,56 +1,28 @@
 import * as React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import styled from "styled-components";
+import { useSelector } from "react-redux";
 
-import { RootState } from "../../store/rootReducer";
-import {
-  removeFromCart,
-  CartItem,
-  increaseItemQuantity,
-} from "../../store/slices/cart";
+import { CartItem, cartItemsSelector } from "../../store/slices/cart";
 
 import { WrapperContainer } from "../WrapperContainer";
-
-import { formatPrice } from "../../utils/formatPrice";
+import { CartProduct } from "../CarProduct";
 
 export const Cart: React.FC = () => {
-  const cart = useSelector((state: RootState) => state.cart.items);
-  const dispatch = useDispatch();
+  const cartItems = useSelector(cartItemsSelector);
 
   return (
     <WrapperContainer>
       <h2>Cart</h2>
-      {cart.length
-        ? cart.map((cartItem: CartItem, index) => (
-            <CartItemWrapper key={index}>
-              <CartItemTitle>{cartItem.title}</CartItemTitle>
-              <div>Price: {formatPrice(cartItem.price)}</div>
-              <div>
-                Qty: {cartItem.quantity}{" "}
-                <button
-                  onClick={() => dispatch(increaseItemQuantity(cartItem.id))}
-                >
-                  +
-                </button>
-              </div>
-              <button onClick={() => dispatch(removeFromCart(cartItem.id))}>
-                remove from cart
-              </button>
-            </CartItemWrapper>
+      {cartItems.length
+        ? cartItems.map((cartItem: CartItem) => (
+            <CartProduct
+              key={cartItem.id}
+              id={cartItem.id}
+              title={cartItem.title}
+              price={cartItem.price}
+              quantity={cartItem.quantity}
+            />
           ))
         : "No items :("}
     </WrapperContainer>
   );
 };
-
-const CartItemWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  &:not(:last-child) {
-    margin-bottom: 16px;
-  }
-`;
-
-const CartItemTitle = styled.div`
-  flex-basis: 40%;
-`;

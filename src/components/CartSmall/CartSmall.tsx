@@ -1,16 +1,12 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
-
-import { RootState } from "../../store/rootReducer";
-import { CartItem } from "../../store/slices/cart";
-
 import { formatPrice } from "../../utils/formatPrice";
 
+import { cartItemsSelector, cartTotalSelector } from "../../store/slices/cart";
+
 export const CartSmall: React.FC = () => {
-  const cart = useSelector((state: RootState) => state.cart.items);
-  const totalPrice: number = useSelector(
-    (state: RootState) => state.cart.total
-  );
+  const cart = useSelector(cartItemsSelector);
+  const totalPrice: number = useSelector(cartTotalSelector);
 
   return (
     <div>

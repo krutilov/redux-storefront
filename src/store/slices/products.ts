@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../rootReducer";
 
 import { AppThunk } from "../store";
 import { getData } from "../api/mockApi";
@@ -46,11 +47,19 @@ export const {
   getProductsFailure,
 } = productsSlice.actions;
 
+// Selectors
+
+export const productsSelector = (state: RootState) => state.products.items;
+export const productsLoadingStatusSelector = (state: RootState) =>
+  state.products.isLoading;
+
+// Thunks
+
 export const fetchProducts = (): AppThunk => async (dispatch) => {
   try {
     dispatch(getProductsStart());
-    const data = await getData();
-    dispatch(getProductsSuccess(data));
+    const products = await getData();
+    dispatch(getProductsSuccess(products));
   } catch (err) {
     dispatch(getProductsFailure(err));
   }

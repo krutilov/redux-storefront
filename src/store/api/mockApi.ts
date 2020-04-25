@@ -1,4 +1,4 @@
-import { mockProducts } from "../mockProducts";
+import { mockProducts } from "./mockProducts";
 
 export const getData = () =>
   new Promise((resolve, reject) => {
@@ -12,7 +12,7 @@ export const getSingleProduct = (id: number) =>
     setTimeout(() => {
       const product = mockProducts.find((product) => product.id === id);
       resolve(product);
-    }, 300);
+    }, 100);
   });
 
 export const getDiscountPercent = () =>
