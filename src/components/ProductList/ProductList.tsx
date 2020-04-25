@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import {
+  Product,
   productsSelector,
   productsLoadingStatusSelector,
   fetchProducts,
 } from "../../store/slices/products";
-import { Product } from "../../store/slices/products";
 
 import { WrapperContainer } from "../WrapperContainer";
 import { SectionTitle } from "../SectionTitle";
@@ -30,7 +30,7 @@ export const ProductList: React.FC = () => {
       <Grid>
         {isLoading
           ? "Loading items"
-          : products.map((product: any) => (
+          : products.map((product: Product) => (
               <GridItem key={product.id}>
                 <ProductCard
                   id={product.id}

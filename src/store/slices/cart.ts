@@ -2,7 +2,7 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 import { AppThunk } from "../store";
 import { RootState } from "../rootReducer";
-import { getSingleProduct, getDiscountPercent } from "../api/mockApi";
+import { getSingleProduct } from "../api/mockApi";
 
 export interface CartItem {
   id: number;
@@ -115,17 +115,6 @@ export const addSingleProductToCart = (id: number): AppThunk => async (
     const singleProduct = await getSingleProduct(id);
     dispatch(addToCartSuccess(singleProduct));
   } catch (err) {
-    dispatch(addToCartFailure(err));
-  }
-};
-
-export const applyDiscount = (): AppThunk => async (dispatch) => {
-  try {
-    // TODO: Add discount is loading statuses
-    const discountPercent = await getDiscountPercent();
-    dispatch(setDiscountPercent(discountPercent));
-  } catch (err) {
-    // TODO: should be another error here
     dispatch(addToCartFailure(err));
   }
 };

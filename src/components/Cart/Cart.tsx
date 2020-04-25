@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { CartItem, cartItemsSelector } from "../../store/slices/cart";
 
 import { WrapperContainer } from "../WrapperContainer";
-import { CartProduct } from "../CarProduct";
+import { CartProduct } from "../CartProduct";
 
 export const Cart: React.FC = () => {
   const cartItems = useSelector(cartItemsSelector);

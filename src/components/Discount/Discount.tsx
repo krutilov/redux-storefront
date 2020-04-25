@@ -1,13 +1,13 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { applyDiscount } from "../../store/slices/cart";
+import { setDiscountPercent } from "../../store/slices/cart";
 
 export const Discount: React.FC = () => {
   const dispatch = useDispatch();
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(applyDiscount()); // Mock 10 percent discount
+    dispatch(setDiscountPercent(10)); // Mock 10 percent discount
   };
 
   return (
