@@ -38,6 +38,7 @@ export const ProductList: React.FC = () => {
                   description={product.description}
                   imageUrl={product.imageUrl}
                   price={product.price}
+                  isLoading={product.isLoading}
                 />
               </GridItem>
             ))}

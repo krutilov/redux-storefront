@@ -11,7 +11,7 @@ export const AppHeader: React.FC = () => {
           <Logo>Logo</Logo>
         </Link>
         <Link to="/checkout">
-          <CartSmall></CartSmall>
+          <CartSmall />
         </Link>
       </HeaderInner>
     </HeaderWrapper>
@@ -38,6 +38,10 @@ const HeaderInner = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `;
 
 const Logo = styled.div`

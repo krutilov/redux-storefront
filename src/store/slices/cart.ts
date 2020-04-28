@@ -3,6 +3,7 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { AppThunk } from "../store";
 import { RootState } from "../rootReducer";
 import { getSingleProduct } from "../api/mockApi";
+import { productLoadingStart, productLoadingEnd } from "./products";
 
 export interface CartItem {
   id: number;
@@ -111,9 +112,11 @@ export const addSingleProductToCart = (id: number): AppThunk => async (
   dispatch
 ) => {
   try {
+    dispatch(productLoadingStart(id));
     dispatch(addToCartStart());
     const singleProduct = await getSingleProduct(id);
     dispatch(addToCartSuccess(singleProduct));
+    dispatch(productLoadingEnd(id));
   } catch (err) {
     dispatch(addToCartFailure(err));
   }

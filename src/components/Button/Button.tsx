@@ -4,10 +4,19 @@ import styled from "styled-components";
 interface ButtonProps {
   title: string;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  isLoading?: boolean;
 }
 
-export const Button: React.FC<ButtonProps> = ({ title, onClick }) => {
-  return <ButtonElement onClick={onClick}>{title}</ButtonElement>;
+export const Button: React.FC<ButtonProps> = ({
+  title,
+  onClick,
+  isLoading,
+}) => {
+  return (
+    <ButtonElement onClick={onClick}>
+      {isLoading ? "loading" : title}
+    </ButtonElement>
+  );
 };
 
 const ButtonElement = styled.button`

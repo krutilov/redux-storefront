@@ -14,11 +14,14 @@ export const ProductCard: React.FC<Product> = ({
   title,
   imageUrl,
   price,
+  isLoading,
 }) => {
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
-    dispatch(addSingleProductToCart(id));
+    if (!isLoading) {
+      dispatch(addSingleProductToCart(id));
+    }
   };
 
   return (
@@ -28,7 +31,11 @@ export const ProductCard: React.FC<Product> = ({
       </ImageWrapper>
       <Title>{title}</Title>
       <Price>{formatPrice(price)}</Price>
-      <Button onClick={handleAddToCart} title="Add to cart"></Button>
+      <Button
+        onClick={handleAddToCart}
+        title="Add to cart"
+        isLoading={isLoading}
+      ></Button>
     </CardWrapper>
   );
 };

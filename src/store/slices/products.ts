@@ -10,6 +10,7 @@ export interface Product {
   description: string;
   imageUrl: string;
   price: number;
+  isLoading?: boolean;
 }
 
 export interface ProductsInitialState {
@@ -38,6 +39,22 @@ export const productsSlice = createSlice({
     getProductsFailure(state, action) {
       state.error = true;
     },
+    productLoadingStart(state, action) {
+      const product = state.items.find(
+        (product) => product.id === action.payload
+      );
+      if (product) {
+        product.isLoading = true;
+      }
+    },
+    productLoadingEnd(state, action) {
+      const product = state.items.find(
+        (product) => product.id === action.payload
+      );
+      if (product) {
+        product.isLoading = false;
+      }
+    },
   },
 });
 
@@ -45,6 +62,8 @@ export const {
   getProductsStart,
   getProductsSuccess,
   getProductsFailure,
+  productLoadingStart,
+  productLoadingEnd,
 } = productsSlice.actions;
 
 // Selectors

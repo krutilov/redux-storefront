@@ -12,5 +12,5 @@ export const getSingleProduct = (id: number) =>
     setTimeout(() => {
       const product = mockProducts.find((product) => product.id === id);
       resolve(product);
-    }, 100);
+    }, 500);
   });
