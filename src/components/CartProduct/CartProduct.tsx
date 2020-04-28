@@ -10,6 +10,7 @@ import {
   decreaseItemQuantity,
 } from "../../store/slices/cart";
 
+import { ProgressRing } from "../ProgressRing";
 import { Remove } from "../../icons/Remove";
 
 export const CartProduct: React.FC<CartItem> = ({
@@ -20,13 +21,14 @@ export const CartProduct: React.FC<CartItem> = ({
 }) => {
   const dispatch = useDispatch();
   const [deleteTimeout, setDeleteTimeout] = React.useState<boolean>(false);
-  const [timer, setTimer] = React.useState<number>();
+  const [timer, setTimer] = React.useState<number>(0);
+  const [progress, setProgress] = React.useState<number>(0);
 
   const handleDelete = (): void => {
     setDeleteTimeout(true);
     const time = setTimeout(() => {
       dispatch(removeFromCart(id));
-    }, 3000);
+    }, 3500);
     setTimer(time);
   };
 
@@ -35,9 +37,21 @@ export const CartProduct: React.FC<CartItem> = ({
     clearTimeout(timer);
   }, [timer]);
 
+  // React.useEffect(() => {
+  //   const progressInterval = setInterval(() => {
+  //     setProgress(progress + 10);
+  //   }, 3000 / 10);
+
+  //   if (progress === 100) {
+  //     clearInterval(progressInterval);
+  //   }
+  // });
+
   return (
     <CartItemContainer>
-      <CartItemTitle>{title}</CartItemTitle>
+      <CartItemTitle>
+        {title} {progress}
+      </CartItemTitle>
       <div>Price: {formatPrice(price)}</div>
       <div>
         <button
@@ -50,7 +64,12 @@ export const CartProduct: React.FC<CartItem> = ({
         <button onClick={() => dispatch(increaseItemQuantity(id))}>+</button>
       </div>
       {deleteTimeout ? (
-        <button onClick={handleCancelDelete}>undo</button>
+        <RemoveContainer>
+          <ProgressRing radius={10} stroke={1} />
+          <UndoButtonContainer>
+            <button onClick={handleCancelDelete}>Cancel</button>
+          </UndoButtonContainer>
+        </RemoveContainer>
       ) : (
         <RemoveButton onClick={handleDelete}>
           <Remove size={16} />
@@ -70,6 +89,15 @@ const CartItemContainer = styled.div`
 
 const CartItemTitle = styled.div`
   flex-basis: 40%;
+`;
+
+const RemoveContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const UndoButtonContainer = styled.div`
+  margin-left: 8px;
 `;
 
 const RemoveButton = styled.button`

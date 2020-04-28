@@ -16,7 +16,7 @@ export const Discount: React.FC = () => {
     <WrapperContainer>
       <h3>Discount</h3>
       <form action="" onSubmit={handleFormSubmit}>
-        <input placeholder="Coupon code" type="text" />
+        <input placeholder="Just hit submit" type="text" />
         <button>Submit</button>
       </form>
     </WrapperContainer>
