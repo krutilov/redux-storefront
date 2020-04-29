@@ -66,6 +66,16 @@ export const cartSlice = createSlice({
         currentProduct.quantity = currentProduct.quantity -= 1;
       }
     },
+    setCustomQuantity(state, action) {
+      const { id, value } = action.payload;
+
+      const currentProduct = state.items.find(
+        (product: CartItem) => product.id === id
+      );
+      if (currentProduct) {
+        currentProduct.quantity = value;
+      }
+    },
     removeFromCart(state, action) {
       const index = state.items.findIndex(
         (item: CartItem) => item.id === action.payload
@@ -88,6 +98,7 @@ export const {
   setDiscountPercent,
   increaseItemQuantity,
   decreaseItemQuantity,
+  setCustomQuantity,
 } = cartSlice.actions;
 
 // Selectors

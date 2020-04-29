@@ -11,7 +11,9 @@ import {
 } from "../../store/slices/cart";
 
 import { ProgressRing } from "../ProgressRing";
+import { Quantity } from "../Quantity";
 import { Remove } from "../../icons/Remove";
+import { Button } from "../Button";
 
 export const CartProduct: React.FC<CartItem> = ({
   id,
@@ -22,7 +24,7 @@ export const CartProduct: React.FC<CartItem> = ({
   const dispatch = useDispatch();
   const [deleteTimeout, setDeleteTimeout] = React.useState<boolean>(false);
   const [timer, setTimer] = React.useState<number>(0);
-  const [progress, setProgress] = React.useState<number>(0);
+  // const [progress, setProgress] = React.useState<number>(0);
 
   const handleDelete = (): void => {
     setDeleteTimeout(true);
@@ -49,31 +51,26 @@ export const CartProduct: React.FC<CartItem> = ({
 
   return (
     <CartItemContainer>
-      <CartItemTitle>
-        {title} {progress}
-      </CartItemTitle>
-      <div>Price: {formatPrice(price)}</div>
-      <div>
-        <button
-          disabled={quantity < 2}
-          onClick={() => dispatch(decreaseItemQuantity(id))}
-        >
-          -
-        </button>
-        Qty: {quantity}
-        <button onClick={() => dispatch(increaseItemQuantity(id))}>+</button>
-      </div>
-      {deleteTimeout ? (
+      <CartItemTitle>{title}</CartItemTitle>
+      <CartItemPrice>{formatPrice(price)}</CartItemPrice>
+      <CartItemTotal>{formatPrice(price * quantity)}</CartItemTotal>
+      <CartItemQuantity>
+        <Quantity
+          increaseQuantity={() => dispatch(increaseItemQuantity(id))}
+          decreaseQuantity={() => dispatch(decreaseItemQuantity(id))}
+          quantity={quantity}
+        />
+      </CartItemQuantity>
+      <RemoveButton onClick={handleDelete}>
+        <Remove size={16} />
+      </RemoveButton>
+      {deleteTimeout && (
         <RemoveContainer>
           <ProgressRing radius={10} stroke={1} />
           <UndoButtonContainer>
-            <button onClick={handleCancelDelete}>Cancel</button>
+            <Button title="Cancel" onClick={handleCancelDelete} />
           </UndoButtonContainer>
         </RemoveContainer>
-      ) : (
-        <RemoveButton onClick={handleDelete}>
-          <Remove size={16} />
-        </RemoveButton>
       )}
     </CartItemContainer>
   );
@@ -82,18 +79,40 @@ export const CartProduct: React.FC<CartItem> = ({
 const CartItemContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  &:not(:last-child) {
-    margin-bottom: 16px;
-  }
+  align-items: center;
+  padding: 32px 8px;
+  border-bottom: 1px solid #e3e3e3;
+  position: relative;
 `;
 
 const CartItemTitle = styled.div`
   flex-basis: 40%;
 `;
 
+const CartItemPrice = styled.div`
+  flex-basis: 20%;
+`;
+
+const CartItemQuantity = styled.div`
+  flex-basis: 20%;
+`;
+
+const CartItemTotal = styled.div`
+  flex-basis: 20%;
+`;
+
 const RemoveContainer = styled.div`
   display: flex;
   align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background: rgba(255, 255, 255, 0.9);
 `;
 
 const UndoButtonContainer = styled.div`

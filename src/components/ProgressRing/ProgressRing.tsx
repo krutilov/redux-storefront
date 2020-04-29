@@ -43,4 +43,5 @@ const Circle = styled.circle`
   transition: 0.35s linear;
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
+  position: relative;
 `;
