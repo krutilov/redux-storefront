@@ -8,7 +8,7 @@ export const AppHeader: React.FC = () => {
     <HeaderWrapper>
       <HeaderInner>
         <Link to="/">
-          <Logo>Logo</Logo>
+          <Logo>Redux Storefront</Logo>
         </Link>
         <Link to="/checkout">
           <CartSmall />

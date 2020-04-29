@@ -12,6 +12,7 @@ import {
 import { WrapperContainer } from "../WrapperContainer";
 import { SectionTitle } from "../SectionTitle";
 import { ProductCard } from "../ProductCard";
+import { ProductCardLoading } from "../ProductCardLoading";
 
 export const ProductList: React.FC = () => {
   const dispatch = useDispatch();
@@ -28,22 +29,36 @@ export const ProductList: React.FC = () => {
     <WrapperContainer>
       <SectionTitle title="Product list"></SectionTitle>
       <Grid>
-        {isLoading
-          ? "Loading items"
-          : products.map((product: Product) => (
-              <GridItem key={product.id}>
-                <ProductCard
-                  id={product.id}
-                  title={product.title}
-                  description={product.description}
-                  imageUrl={product.imageUrl}
-                  price={product.price}
-                  isLoading={product.isLoading}
-                />
-              </GridItem>
-            ))}
+        {isLoading ? (
+          <GridLoader></GridLoader>
+        ) : (
+          products.map((product: Product) => (
+            <GridItem key={product.id}>
+              <ProductCard
+                id={product.id}
+                title={product.title}
+                description={product.description}
+                imageUrl={product.imageUrl}
+                price={product.price}
+                isLoading={product.isLoading}
+              />
+            </GridItem>
+          ))
+        )}
       </Grid>
     </WrapperContainer>
+  );
+};
+
+const GridLoader: React.FC = () => {
+  return (
+    <>
+      {[...Array(6)].map(() => (
+        <GridItem>
+          <ProductCardLoading />
+        </GridItem>
+      ))}
+    </>
   );
 };
 
